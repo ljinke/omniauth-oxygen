@@ -1,10 +1,10 @@
 # encoding: utf-8
 
-require 'omniauth/strategies/oauth'
+require 'omniauth-oauth'
 
 module OmniAuth
   module Strategies
-    class Oxygen < OmniAuth::Strategies::OAuth2
+    class Oxygen < OmniAuth::Strategies::OAuth
       option :name, "oxygen"
 
       option :client_options, {
@@ -15,10 +15,7 @@ module OmniAuth
         :token_url => "/oauth2.0/token"
       }
 
-      option :token_params, {
-        :state => 'foobar',
-        :parse => :query
-      }
+      option :scope, 'r_basicprofile r_emailaddress'
 
       uid do
         @uid ||= begin
@@ -62,4 +59,4 @@ module OmniAuth
   end
 end
 
-OmniAuth.config.add_camelization('qq_connect', 'QQConnect')
+#OmniAuth.config.add_camelization('qq_connect', 'QQConnect')
