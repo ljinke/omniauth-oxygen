@@ -7,7 +7,7 @@ Gem::Specification.new do |spec|
   spec.name          = "omniauth-oxygen"
   spec.version       = Omniauth::Oxygen::VERSION
   spec.authors       = ["Jackie Liu"]
-  spec.email         = ["ljinke@gmail.com"]
+  spec.email         = ["jinke.liu@autodesk.com"]
   spec.summary       = %q{OAuth for Autodesk accounts.}
   spec.description   = %q{OAuth for Autodesk accounts.}
   spec.homepage      = ""

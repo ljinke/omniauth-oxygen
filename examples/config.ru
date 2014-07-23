@@ -24,10 +24,11 @@ end
 use Rack::Session::Cookie, :secret => "change_me"
 
 use OmniAuth::Builder do
-  #note that the scope is different from the default
-  #we also have to repeat the default fields in order to get
-  #the extra 'connections' field in there
-  provider :oxygen, ENV['OXYGEN_CONSUMER_KEY'], ENV['OXYGEN_CONSUMER_SECRET'], :scope => 'r_fullprofile+r_emailaddress+r_network', :fields => ["id", "email-address", "first-name", "last-name", "headline", "industry", "picture-url", "public-profile-url", "location", "connections"]
+  provider :oxygen, OpenID::Store::Filesystem.new('/tmp'), 
+    :name => 'oxygen',
+    :identifier => 'https://accounts.autodesk.com', 
+    :consumer_key => ENV['OXYGEN_CONSUMER_KEY'],
+    :consumer_secret => ENV['OXYGEN_CONSUMER_SECRET']
 end
 
 run App.new
