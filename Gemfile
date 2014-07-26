@@ -1,6 +1,9 @@
-source 'https://rubygems.org'
+source 'http://rubygems.org'
 
-# Specify your gem's dependencies in omniauth-oxygen.gemspec
+gem 'ruby-openid'
+
 gemspec
 
-gem 'oauth'
+group :example do
+  gem 'sinatra'
+end

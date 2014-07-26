@@ -8,12 +8,12 @@ Gem::Specification.new do |spec|
   spec.version       = Omniauth::Oxygen::VERSION
   spec.authors       = ["Jackie Liu"]
   spec.email         = ["jinke.liu@autodesk.com"]
-  spec.summary       = %q{OAuth for Autodesk accounts.}
-  spec.description   = %q{OAuth for Autodesk accounts.}
-  spec.homepage      = ""
+  spec.summary       = %q{Omniauth OpenID strategy for Autodesk accounts.}
+  spec.description   = %q{Omniauth OpenID strategy for Autodesk accounts.}
+  spec.homepage      = "https://github.com/ljinke/omniauth-oxygen"
   spec.license       = "MIT"
 
-  spec.files         = Dir.glob("{lib}/**/**/*") + ["Rakefile"]
+  spec.files = `git ls-files`.split("\n")
   spec.executables   = spec.files.grep(%r{^bin/}) { |f| File.basename(f) }
   spec.test_files    = spec.files.grep(%r{^(test|spec|features)/})
   spec.require_paths = ["lib"]
@@ -23,4 +23,15 @@ Gem::Specification.new do |spec|
 
   spec.add_dependency('omniauth', '~> 1.0')
   spec.add_dependency('oauth', '0.4.7')
+
+  spec.add_dependency 'rack-openid', '~> 1.3.1'
+  spec.add_development_dependency 'rack-test', '~> 0.5'
+  spec.add_development_dependency 'rdiscount', '~> 1.6'
+  spec.add_development_dependency 'rspec', '~> 2.7'
+  spec.add_development_dependency 'simplecov', '~> 0.4'
+  spec.add_development_dependency 'webmock', '~> 1.7'
+  spec.add_development_dependency 'yard', '~> 0.7'
+
+  spec.required_rubygems_version = Gem::Requirement.new('>= 1.3.6') if spec.respond_to? :required_rubygems_version=
+  spec.summary = spec.description
 end
