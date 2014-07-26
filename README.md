@@ -1,29 +1,39 @@
 # Omniauth::Oxygen
 
-OAuth for Autodesk accounts.
+An Omniauth strategy for Autodesk accounts.
 
 ## Installation
 
 Add this line to your application's Gemfile:
 
-    gem 'omniauth-oxygen'
+    gem 'omniauth-oxygen', :git => 'git@github.com:ljinke/omniauth-oxygen.git'
 
 And then execute:
 
-    $ bundle
+    $ bundle install
 
-Or install it yourself as:
-
-    $ gem install omniauth-oxygen
 
 ## Usage
 
 
+Ruby on Rails:
+  
+In development.rb, add
 
-## Contributing
+    config.middleware.use OmniAuth::Builder do
+      provider :oxygen, :env => "staging"
+    end
 
-1. Fork it ( https://github.com/ljinkne/omniauth-oxygen/fork )
-2. Create your feature branch (`git checkout -b my-new-feature`)
-3. Commit your changes (`git commit -am 'Add some feature'`)
-4. Push to the branch (`git push origin my-new-feature`)
-5. Create a new Pull Request
+or in production.rb, add
+
+    config.middleware.use OmniAuth::Builder do
+      provider :oxygen, :env => "production"
+    end
+
+## Run the example
+
+Update the hosts file: 127.0.1.1 b2-dev.autodesk.com
+
+     $ ruby sinatra.rb
+
+Visit http://b2-dev.autodesk.com:4567
