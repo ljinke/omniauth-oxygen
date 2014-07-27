@@ -34,10 +34,10 @@ or in production.rb, add
 
 Update /etc/hosts: 
 
-     127.0.1.1 b2-dev.autodesk.com
+     127.0.1.1 mycloud-staging.autodesk.com
 
 Go to the examples folder:
 
      $ ruby sinatra.rb
 
-Visit http://b2-dev.autodesk.com:4567
+Visit http://mycloud-staging.autodesk.com:4567
