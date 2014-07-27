@@ -36,6 +36,8 @@ Update /etc/hosts:
 
      127.0.1.1 b2-dev.autodesk.com
 
+Go to the examples folder:
+
      $ ruby sinatra.rb
 
 Visit http://b2-dev.autodesk.com:4567
