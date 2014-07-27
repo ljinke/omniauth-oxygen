@@ -6,7 +6,7 @@ Bundler.setup :default, :example
 require 'sinatra'
 require 'omniauth-oxygen'
 
-use Rack::Session::Cookie
+use Rack::Session::Pool
 
 use OmniAuth::Builder do
   provider :oxygen, :evn => "staging"
