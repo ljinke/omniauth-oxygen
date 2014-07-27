@@ -29,4 +29,8 @@ end
 
     redirect '/'
   end
+
+  send method, '/auth/failure' do
+    "OmniAuth authentication failed."
+  end
 end

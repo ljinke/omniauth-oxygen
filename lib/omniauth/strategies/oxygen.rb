@@ -16,10 +16,11 @@ module OmniAuth
           :last_name => 'http://axschema.org/namePerson/last',
           :uid => "http://axschema.org/autodesk/userid",
           :image20 => "http://axschema.org/autodesk/media/image/20",
-          :image50 => "http://axschema.org/autodesk/media/image/50"
+          :image50 => "http://axschema.org/autodesk/media/image/50",
+          :nounce => "openid.response_nonce",
+          :sig => "openid.sig"
         }
 
-        option :name, :oxygen
         option :env, :staging
         option :required, [AX[:email], AX[:name], AX[:first_name], AX[:last_name], 'email', 'fullname', AX[:uid], AX[:image20], AX[:image50]]
         option :optional, [AX[:nickname], 'nickname']
@@ -43,10 +44,10 @@ module OmniAuth
           super
         end
 
-        uid { openid_response.display_identifier }
+        uid { oxygen_info['uid'] }
 
         info do
-          sreg_user_info.merge(ax_user_info)
+          oxygen_info
         end
 
         extra do
@@ -114,6 +115,10 @@ module OmniAuth
             'profile20' => ax.get_single(AX[:image20]),
             'profile50' => ax.get_single(AX[:image50])
           }.inject({}){|h,(k,v)| h[k] = Array(v).first; h}.reject{|k,v| v.nil? || v == ''}
+        end
+
+        def oxygen_info
+          @oxygen_info ||= sreg_user_info.merge(ax_user_info)
         end
     end
   end
