@@ -33,6 +33,7 @@ or in production.rb, add
 ## Run the example
 
 Update /etc/hosts: 
+
      127.0.1.1 b2-dev.autodesk.com
 
      $ ruby sinatra.rb
