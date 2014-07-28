@@ -50,6 +50,10 @@ module OmniAuth
           oxygen_info
         end
 
+        def credentials
+          {}
+        end
+
         extra do
           {'response' => openid_response}
         end
