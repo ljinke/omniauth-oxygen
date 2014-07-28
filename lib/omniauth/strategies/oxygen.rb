@@ -2,6 +2,7 @@
 require 'omniauth'
 require 'rack/openid'
 require 'openid/store/memory'
+require 'oauth'
 
 module OmniAuth
   module Strategies
@@ -22,6 +23,8 @@ module OmniAuth
         }
 
         option :env, :staging
+        option :key, nil
+        option :secret, nil
         option :required, [AX[:email], AX[:name], AX[:first_name], AX[:last_name], 'email', 'fullname', AX[:uid], AX[:image20], AX[:image50]]
         option :optional, [AX[:nickname], 'nickname']
         option :store, ::OpenID::Store::Memory.new
@@ -51,7 +54,7 @@ module OmniAuth
         end
 
         def credentials
-          {}
+          oxygen_credential
         end
 
         extra do
@@ -125,6 +128,36 @@ module OmniAuth
         def oxygen_info
           @oxygen_info ||= sreg_user_info.merge(ax_user_info)
         end
+
+        def oxygen_credential
+          @oauth_info ||= begin
+            # Based on https://gist.github.com/569650 by nov
+            oauth_response = ::OpenID::OAuth::Response.from_success_response(openid_response)
+
+            consumer = ::OAuth::Consumer.new(
+              option.key,
+              option.secret,
+              :site => identifier,
+              :request_token_path => "/OAuth/RequestToken",
+              :authorize_path => "/OAuth/Authorize",
+              :access_token_path  => '/OAuth/AccessToken'
+            )
+
+            request_token = ::OAuth::RequestToken.new(
+              consumer,
+              oauth_response.request_token,
+              "" # OAuth request token secret is blank in OpenID/OAuth Hybrid
+            )
+
+            access_token = request_token.get_access_token
+            
+            {
+              'token' => access_token.token,
+              'secret' => access_token.secret
+            }
+          end
+        end
+      end
     end
   end
 end
