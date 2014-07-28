@@ -9,7 +9,7 @@ require 'omniauth-oxygen'
 use Rack::Session::Pool
 
 use OmniAuth::Builder do
-  provider :oxygen, :evn => "staging"
+  provider :oxygen, :evn => "staging", :key => 'mycloud-staging.autodesk.com', :secret =>'Secret123'
 end
 
 get '/' do

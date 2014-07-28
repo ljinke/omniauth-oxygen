@@ -21,7 +21,7 @@ module OmniAuth
           :nounce => "openid.response_nonce",
           :sig => "openid.sig"
         }
-
+        option :name, :oxygen
         option :env, :staging
         option :key, nil
         option :secret, nil
@@ -131,12 +131,16 @@ module OmniAuth
 
         def oxygen_credential
           @oauth_info ||= begin
+            if options[:key].nil? or options[:secret].nil?
+              return {}
+            end
+
             # Based on https://gist.github.com/569650 by nov
             oauth_response = ::OpenID::OAuth::Response.from_success_response(openid_response)
 
             consumer = ::OAuth::Consumer.new(
-              option.key,
-              option.secret,
+              options[:key],
+              options[:secret],
               :site => identifier,
               :request_token_path => "/OAuth/RequestToken",
               :authorize_path => "/OAuth/Authorize",
@@ -152,12 +156,11 @@ module OmniAuth
             access_token = request_token.get_access_token
             
             {
-              'token' => access_token.token,
-              'secret' => access_token.secret
+              :token => access_token.token,
+              :secret => access_token.secret
             }
           end
         end
-      end
     end
   end
 end
