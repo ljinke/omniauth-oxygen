@@ -3,30 +3,28 @@ require 'omniauth'
 require 'rack/openid'
 require 'openid/store/memory'
 require 'oauth'
+require 'openid/extensions/oauth'
 
 module OmniAuth
   module Strategies
     class Oxygen
       include OmniAuth::Strategy
-
+        #http://openid.net/srv/ax/1.0
         AX = {
           :email => 'http://axschema.org/contact/email',
           :name => 'http://axschema.org/namePerson',
           :nickname => 'http://axschema.org/namePerson/friendly',
           :first_name => 'http://axschema.org/namePerson/first',
           :last_name => 'http://axschema.org/namePerson/last',
-          :uid => "http://axschema.org/autodesk/userid",
-          :image20 => "http://axschema.org/autodesk/media/image/20",
-          :image50 => "http://axschema.org/autodesk/media/image/50",
-          :nounce => "openid.response_nonce",
-          :sig => "openid.sig"
+          :uid => 'http://axschema.org/autodesk/userid',
+          :image20 => 'http://axschema.org/autodesk/media/image/20',
+          :image50 => 'http://axschema.org/autodesk/media/image/50'
         }
-        option :name, :oxygen
-        option :env, :staging
+        option :env, 'staging'
         option :key, nil
         option :secret, nil
-        option :required, [AX[:email], AX[:name], AX[:first_name], AX[:last_name], 'email', 'fullname', AX[:uid], AX[:image20], AX[:image50]]
-        option :optional, [AX[:nickname], 'nickname']
+        option :required, [AX[:email], AX[:name], AX[:first_name], AX[:last_name], 'email', 'fullname', AX[:uid], AX[:image20], AX[:image50], AX[:ext2]]
+        option :optional, [AX[:nickname], 'nickname','openid.ext2.consumer']
         option :store, ::OpenID::Store::Memory.new
         option :identifier, nil
         option :identifier_param, 'openid_url'
@@ -137,6 +135,8 @@ module OmniAuth
 
             # Based on https://gist.github.com/569650 by nov
             oauth_response = ::OpenID::OAuth::Response.from_success_response(openid_response)
+
+            p oauth_response.request_token
 
             consumer = ::OAuth::Consumer.new(
               options[:key],
