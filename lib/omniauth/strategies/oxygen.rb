@@ -66,6 +66,7 @@ module OmniAuth
             :return_to => callback_url,
             :required => options.required,
             :optional => options.optional,
+            :"oauth[consumer]" => @options[:key],
             :method => 'post'
           )}, []]}
         end
