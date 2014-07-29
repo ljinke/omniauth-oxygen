@@ -24,7 +24,7 @@ module OmniAuth
         option :key, nil
         option :secret, nil
         option :required, [AX[:email], AX[:name], AX[:first_name], AX[:last_name], 'email', 'fullname', AX[:uid], AX[:image20], AX[:image50], AX[:ext2]]
-        option :optional, [AX[:nickname], 'nickname','openid.ext2.consumer']
+        option :optional, [AX[:nickname], 'nickname']
         option :store, ::OpenID::Store::Memory.new
         option :identifier, nil
         option :identifier_param, 'openid_url'
