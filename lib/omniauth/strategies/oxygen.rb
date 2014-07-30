@@ -59,7 +59,7 @@ module OmniAuth
           {'response' => openid_response}
         end
 
-      private
+      protected
 
         def dummy_app
           lambda{|env| [401, {"WWW-Authenticate" => Rack::OpenID.build_header(
@@ -68,6 +68,7 @@ module OmniAuth
             :required => options.required,
             :optional => options.optional,
             :"oauth[consumer]" => @options[:key],
+            :"oauth[scope]" =>" "
             :method => 'post'
           )}, []]}
         end
@@ -109,6 +110,7 @@ module OmniAuth
         end
 
         def ax_user_info
+
           ax = ::OpenID::AX::FetchResponse.from_success_response(openid_response)
           return {} unless ax
           {
