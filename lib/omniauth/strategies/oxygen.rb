@@ -68,7 +68,7 @@ module OmniAuth
             :required => options.required,
             :optional => options.optional,
             :"oauth[consumer]" => @options[:key],
-            :"oauth[scope]" =>" "
+            :"oauth[scope]" =>"oxygen",
             :method => 'post'
           )}, []]}
         end
