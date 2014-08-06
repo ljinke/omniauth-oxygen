@@ -55,7 +55,7 @@ module OmniAuth
         end
 
         extra do
-          {'response' => openid_response}
+          {}
         end
 
       private
