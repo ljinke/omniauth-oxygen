@@ -6,7 +6,7 @@ An Omniauth strategy for Autodesk accounts.
 
 Add this line to your application's Gemfile:
 
-    gem 'omniauth-oxygen', :git => 'git@github.com:ljinke/omniauth-oxygen.git'
+    gem 'omniauth-oxygen', :git => 'git://github.com/ljinke/omniauth-oxygen.git'
 
 And then execute:
 
