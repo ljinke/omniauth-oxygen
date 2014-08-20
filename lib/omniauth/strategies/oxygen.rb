@@ -16,9 +16,7 @@ module OmniAuth
           :last_name => 'http://axschema.org/namePerson/last',
           :uid => "http://axschema.org/autodesk/userid",
           :image20 => "http://axschema.org/autodesk/media/image/20",
-          :image50 => "http://axschema.org/autodesk/media/image/50",
-          :nounce => "openid.response_nonce",
-          :sig => "openid.sig"
+          :image50 => "http://axschema.org/autodesk/media/image/50"
         }
 
         option :env, :staging
@@ -27,6 +25,7 @@ module OmniAuth
         option :store, ::OpenID::Store::Memory.new
         option :identifier, nil
         option :identifier_param, 'openid_url'
+        option :logout, '/auth/oxygen'
 
         def request_phase
          openid = Rack::OpenID.new(dummy_app, options[:store])
@@ -48,7 +47,7 @@ module OmniAuth
           if on_path?("/auth/logout")
             @env['omniauth.strategy'] ||= self
             setup_phase
-            [302, {'Content-Type' => 'text','Location' => logout_url("#{full_host}/auth/oxygen")}, ['302 found'] ]
+            [302, {'Content-Type' => 'text','Location' => logout_url}, ['302 found'] ]
           else
             call_app!
           end
@@ -71,21 +70,14 @@ module OmniAuth
       private
 
         def dummy_app
-          lambda{|env| 
-            req = Rack::Request.new(env)
-            case req.path
-            when '/auth/logout'
-              [302, {'Content-Type' => 'text','Location' => logout_url("/auth/oxygen")}, ['302 found'] ]
-            else
-              [401, {"WWW-Authenticate" => Rack::OpenID.build_header(
+          lambda{|env| [401, {"WWW-Authenticate" => Rack::OpenID.build_header(
               :identifier => identifier,
               :return_to => callback_url,
               :required => options.required,
               :optional => options.optional,
               :"oauth[consumer]" => @options[:key],
               :method => 'post'
-            )}, []]
-          end}
+            )}, []]}
         end
 
         def identifier
@@ -104,11 +96,15 @@ module OmniAuth
           i
         end
 
-        def logout_url(callback_url)
-          "#{identifier}/Authentication/LogOut?ReturnToUrl=#{callback_url}"
+        def logout_url
+          "#{identifier}/Authentication/LogOut?ReturnToUrl=#{full_host}#{logout_return_url}"
         end
 
-        def openid_response
+	def logout_return_url
+	  options[:logout] ||= '/auth/oxygen'
+	end        
+
+	def openid_response
           unless @openid_response
             openid = Rack::OpenID.new(lambda{|env| [200,{},[]]}, options[:store])
             openid.call(env)
