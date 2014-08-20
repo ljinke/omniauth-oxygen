@@ -33,4 +33,8 @@ end
   send method, '/auth/failure' do
     "OmniAuth authentication failed."
   end
+
+  send method, '/logout' do
+    session[:auth]=nil
+  end	
 end

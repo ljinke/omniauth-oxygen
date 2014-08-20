@@ -29,7 +29,7 @@ module OmniAuth
         option :identifier_param, 'openid_url'
 
         def request_phase
-          openid = Rack::OpenID.new(dummy_app, options[:store])
+         openid = Rack::OpenID.new(dummy_app, options[:store])
           response = openid.call(env)
           case env['rack.openid.response']
           when Rack::OpenID::MissingResponse, Rack::OpenID::TimeoutResponse
@@ -42,6 +42,16 @@ module OmniAuth
         def callback_phase
           return fail!(:invalid_credentials) unless openid_response && openid_response.status == :success
           super
+        end
+
+        def other_phase
+          if on_path?("/auth/logout")
+            @env['omniauth.strategy'] ||= self
+            setup_phase
+            [302, {'Content-Type' => 'text','Location' => logout_url("#{full_host}/auth/oxygen")}, ['302 found'] ]
+          else
+            call_app!
+          end
         end
 
         uid { oxygen_info['uid'] }
@@ -61,14 +71,21 @@ module OmniAuth
       private
 
         def dummy_app
-          lambda{|env| [401, {"WWW-Authenticate" => Rack::OpenID.build_header(
-            :identifier => identifier,
-            :return_to => callback_url,
-            :required => options.required,
-            :optional => options.optional,
-            :"oauth[consumer]" => @options[:key],
-            :method => 'post'
-          )}, []]}
+          lambda{|env| 
+            req = Rack::Request.new(env)
+            case req.path
+            when '/auth/logout'
+              [302, {'Content-Type' => 'text','Location' => logout_url("/auth/oxygen")}, ['302 found'] ]
+            else
+              [401, {"WWW-Authenticate" => Rack::OpenID.build_header(
+              :identifier => identifier,
+              :return_to => callback_url,
+              :required => options.required,
+              :optional => options.optional,
+              :"oauth[consumer]" => @options[:key],
+              :method => 'post'
+            )}, []]
+          end}
         end
 
         def identifier
@@ -85,6 +102,10 @@ module OmniAuth
             end 
           end
           i
+        end
+
+        def logout_url(callback_url)
+          "#{identifier}/Authentication/LogOut?ReturnToUrl=#{callback_url}"
         end
 
         def openid_response
