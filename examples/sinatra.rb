@@ -36,5 +36,6 @@ end
 
   send method, '/logout' do
     session[:auth]=nil
+    redirect '/auth/logout'
   end	
 end
