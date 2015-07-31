@@ -81,8 +81,8 @@ module OmniAuth
         end
 
         def identifier
-          i = options.identifier || request.params[options.identifier_param.to_s]
-          
+          i = options.identifier || request.params[options.identifier_param.to_s] || ENV['OXYGEN_URL']
+
           if i.nil? or i == ''
             i = case options.env
             when "dev"
@@ -91,7 +91,7 @@ module OmniAuth
               "https://accounts.autodesk.com"
             else
               "https://accounts-staging.autodesk.com"
-            end 
+            end
           end
           i
         end
@@ -102,7 +102,7 @@ module OmniAuth
 
 	def logout_return_url
 	  options[:logout] ||= '/auth/oxygen'
-	end        
+	end
 
 	def openid_response
           unless @openid_response
