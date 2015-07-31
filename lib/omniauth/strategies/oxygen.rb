@@ -86,14 +86,14 @@ module OmniAuth
           if i.nil? or i == ''
             i = case options.env
             when "development"
-              ENV['OXYGEN_URL'] || "https://accounts-staging.autodesk.com?viewmode=popup"
+              ENV['OXYGEN_URL'] || "https://accounts-staging.autodesk.com"
             when "production"
-              ENV['OXYGEN_URL'] || "https://accounts.autodesk.com?viewmode=popup"
+              ENV['OXYGEN_URL'] || "https://accounts.autodesk.com"
             else
-              ENV['OXYGEN_URL'] || "https://accounts-staging.autodesk.com?viewmode=popup"
+              ENV['OXYGEN_URL'] || "https://accounts-staging.autodesk.com"
             end
           end
-          i
+          i + "?viewmode=popup"
         end
 
         def logout_url
