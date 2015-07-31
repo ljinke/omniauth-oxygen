@@ -93,7 +93,7 @@ module OmniAuth
               ENV['OXYGEN_URL'] || "https://accounts-staging.autodesk.com"
             end
           end
-          i + "?viewmode=popup"
+          i
         end
 
         def logout_url
