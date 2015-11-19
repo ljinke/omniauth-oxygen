@@ -6,7 +6,11 @@ An Omniauth strategy for Autodesk accounts.
 
 Add this line to your application's Gemfile:
 
-    gem 'omniauth-oxygen', :git => 'https://github.com/Vela/omniauth-oxygen-fix-for-dm.git'
+    gem 'omniauth-oxygen', :git => 'https://github.com/Vela/omniauth-oxygen.git'
+
+You can also specify a specific version to use:
+
+    gem 'omniauth-oxygen', :git => 'https://github.com/Vela/omniauth-oxygen.git', ref: 'bdc4904'
 
 And then execute:
 
