@@ -10,7 +10,7 @@ Add this line to your application's Gemfile:
 
 You can also specify a specific version to use:
 
-    gem 'omniauth-oxygen', :git => 'https://github.com/Vela/omniauth-oxygen.git', ref: 'bdc4904'
+    gem 'omniauth-oxygen', :git => 'https://github.com/Vela/omniauth-oxygen.git', ref: '13ae8c5'
 
 And then execute:
 
